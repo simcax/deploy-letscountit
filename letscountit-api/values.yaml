@@ -10,6 +10,15 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "0.2.1a0"
 
+env:
+  - name: EDGEDB_DSN
+    value: "edgedb://edgedb:$EDGEDB_SERVER_PASSWORD@letscountit-edgedb-edgedb.letscountit-edgedb:5656/letscountit"
+  - name: EDGEDB_SERVER_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: edgedb-secret
+        key: password
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: "letscountit-api"
