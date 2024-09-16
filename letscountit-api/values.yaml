@@ -11,13 +11,13 @@ image:
   tag: "0.2.1a0"
 
 env:
-  - name: EDGEDB_DSN
-    value: "edgedb://edgedb:$(EDGEDB_SERVER_PASSWORD)@letscountit-edgedb-edgedb.letscountit-edgedb:5656/letscountit"
   - name: EDGEDB_SERVER_PASSWORD
     valueFrom:
       secretKeyRef:
         name: edgedb-password
         key: password
+  - name: EDGEDB_DSN
+    value: "edgedb://edgedb:$(EDGEDB_SERVER_PASSWORD)@letscountit-edgedb-edgedb.letscountit-edgedb:5656/letscountit"
 
 bitwarden:
   secrets: 
