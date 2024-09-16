@@ -16,8 +16,18 @@ env:
   - name: EDGEDB_SERVER_PASSWORD
     valueFrom:
       secretKeyRef:
-        name: edgedb-secret
+        name: edgedb-password
         key: password
+
+bitwarden:
+  secrets: 
+    - name: "edgedb-password"
+      namespace: "letscountit-api"
+      organizationId: "76b3c1c9-66d3-4ff5-b310-b17901233b84"
+      secretName: "edgedb-password"
+      createMap:
+        - bwSecretId: "da566950-4800-4490-9b8d-b1e900c7c128"
+          secretKeyName: "password"
 
 imagePullSecrets: []
 nameOverride: ""
