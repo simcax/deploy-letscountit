@@ -12,7 +12,7 @@ image:
 
 env:
   - name: EDGEDB_DSN
-    value: "edgedb://edgedb:$EDGEDB_SERVER_PASSWORD@letscountit-edgedb-edgedb.letscountit-edgedb:5656/letscountit"
+    value: "edgedb://edgedb:$(EDGEDB_SERVER_PASSWORD)@letscountit-edgedb-edgedb.letscountit-edgedb:5656/letscountit"
   - name: EDGEDB_SERVER_PASSWORD
     valueFrom:
       secretKeyRef:
