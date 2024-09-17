@@ -1,0 +1,132 @@
+# Default values for letscountit-api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: simcax/letscountit-ui
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "0.1.1a1"
+
+env:
+  - name: API_HOST
+    value: "https://api.beta.letscount.it"
+  - name: APP_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: letscountit-ui-secret
+        key: APP_SECRET
+  - name: APP_ENV
+    value: "beta"
+  - name: SERVER_NAME
+    value: "ui.beta.letscount.it"
+
+bitwarden:
+  secrets: 
+    - name: "letscountit-ui-secret"
+      namespace: "letscountit-ui"
+      organizationId: "76b3c1c9-66d3-4ff5-b310-b17901233b84"
+      secretName: "letscountit-ui-secret"
+      createMap:
+        - bwSecretId: "4fc704cf-1bea-4611-8d2b-b1ee0070767d"
+          secretKeyName: "APP_SECRET"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: "letscountit-ui"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: cloudflare-issuer
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: ui.beta.letscount.it
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: ui-letscountit-tls
+      hosts:
+        - ui.beta.letscount.it
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
