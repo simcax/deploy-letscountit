@@ -31,7 +31,7 @@ bitwarden:
       secretName: "letscountit-ui-secret"
       createMap:
         - bwSecretId: "4fc704cf-1bea-4611-8d2b-b1ee0070767d"
-          secretKeyName: "APP_SECRET"
+          secretKeyName: "4fc704cf-1bea-4611-8d2b-b1ee0070767d"
 
 imagePullSecrets: []
 nameOverride: ""
